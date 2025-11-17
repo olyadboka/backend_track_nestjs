@@ -37,6 +37,6 @@ app.delete("/users/:id", (req, res) => {
   users = users.filter((user) => user.id != id);
   res.status(204).send();
 });
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(3030, () => {
+  console.log("Server is running on port 3030");
 });
