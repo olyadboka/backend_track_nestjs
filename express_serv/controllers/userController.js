@@ -19,6 +19,7 @@ exports.getUsers = (req, res) => {
 };
 
 //UPDATE  a user by ID
+// it is pushing on the RAM not on the database
 
 exports.updateUser = (req, res) => {
   const { id } = req.params;
@@ -27,7 +28,7 @@ exports.updateUser = (req, res) => {
   users = users.map((user) =>
     user.id == userId ? { ...user, ...updateUser } : user
   );
-  res.json(updateUser);
+  res.json(users);
 };
 
 exports.delete = (req, res) => {
