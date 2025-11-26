@@ -1,0 +1,57 @@
+the git init just create a new file which is hidden
+
+
+->  controllers are used to act as a router in Nestjs not logic 
+->  logics are done in the service not in the controller
+->  the way nestjs imports dependency in other file is dependency injection
+->  DTO- when client send a request to our backend it is going to validate if the sent format is correct or not
+
+Nestjs key features
+
+uses typescript = js + type
+-> a mini parts of our project is known as modules
+
+we need nestjs cli
+
+
+
+the dist florder is the conversion version of the ts to js
+
+Chella:- a Reward-App  is  Users earn rewards for specific behaviors, such as 
+
+there we have 4 modules
+
+1. users
+- register
+- login
+- viewing and updating 
+- get starting bonus
+- generate a unique referral code
+- they can also enter a referral code 
+- view and copy their generated referral code also the overview of their dashboard
+
+- 
+
+
+2. referral management
+
+- generating the unique referral code
+- updating the bonus of the user of the referral code is referred by another user
+- also to the referrer
+- user can view the peoples that uses the referral code to enter the chella app
+
+3. task management
+- defining a daily task
+- daily task updating and sending to the users to do
+- there will be change in state in the task activities
+- increasing the balance or updating the balance based on the activity reward amount
+- 
+
+
+4. transfers and transactions
+
+- displaying the total balance of the users in currency 
+- the user can also transfer the money to the other user using username only or withdraw 
+- transaction details are listed here
+- 
+
