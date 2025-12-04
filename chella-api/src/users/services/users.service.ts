@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, UserLoginDto } from '../dtos/users.dto';
 import { get } from 'http';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../schemas/users.schema';
+import { CommonUtils } from 'src/commons/utils';
+import { UserResponse } from '../responses/users.response';
 
 @Injectable()
 export class UserService {
@@ -15,15 +17,63 @@ export class UserService {
     // user registration logic goes here
 
     //1. check if yser exists with provided email or username
+    const existName = await this.userModel.findOne({
+      username: createUserDto.username.toLowerCase(),
+    });
+    if (existName) {
+      throw new BadRequestException('User already exists with this username');
+    }
 
     //2. hash the password
+    const hashedPwd = await bcrypt.hash(createUserDto.password, 10);
 
     //3. generate referral code
+    const referralCode = CommonUtils.generateReferralCode(8);
+    //! we will impelemend a code to increase amount for refering users
 
-    //4.
+    if (createUserDto.refferredBy) {
+      const referringUser = await this.userModel.findOne({
+        referralCode: createUserDto.refferredBy,
+      });
+      if (referringUser) {
+        await this.userModel.findByIdAndUpdate(referringUser._id, {
+          totalEarned: referringUser.totalEarned + 20,
+          amount: referringUser.amount + 20,
+        });
+      }
+    }
+    //4.Prepare an instance to save on db
+
+    const newUser = new this.userModel({
+      fullName: createUserDto.fullName,
+      username: createUserDto.username.toLowerCase(),
+      email: createUserDto.email.toLowerCase(),
+      password: hashedPwd,
+      referralCode: referralCode,
+      referredBy: createUserDto.refferredBy || null,
+      amount: 100,
+      totalEarned: 100,
+      totalreferred: 0,
+    });
+
+    //5. save the user to db
+
+    const savedUser = await newUser.save();
+
+    //6. map to our user response interceptor
+
+    const UserResponse: UserResponse = {
+      id: savedUser._id.toString(),
+      fullName: savedUser.fullName,
+      username: savedUser.username,
+      referralCode: savedUser.referralCode,
+      amount: savedUser.amount,
+      totalEarned: savedUser.totalEarned,
+      totalreferred: savedUser.totalreferred,
+    };
 
     this.userModel.create(createUserDto);
-    return { message: 'User created successfully' };
+    return UserResponse;
   }
 
   async loginUser(logingUser: UserLoginDto) {
