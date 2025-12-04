@@ -85,7 +85,25 @@ export class UserService {
   }
 
   async updateUserProfile(updateProfileDto: UpdateUserDto) {
-    return { message: 'User profile updated successfully' };
+    //1. get the data from dto
+    const body = updateProfileDto;
+
+    // 2. find the user from db and update the profile
+
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { username: body.username },
+      {
+        fullName: body.fullName,
+        password: body.password,
+        email: body.email,
+        referredBy: body.refferredBy || null,
+      },
+      { new: true },
+    );
+    console.log('Updated User:', updatedUser);
+
+    //4. return the updated user profile
+    return updatedUser;
   }
 
   async getMyReferral() {
