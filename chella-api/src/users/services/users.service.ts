@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { User } from '../schemas/users.schema';
 import { CommonUtils } from 'src/commons/utils';
 import { UserResponse } from '../responses/users.response';
-
+import bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
@@ -53,16 +53,17 @@ export class UserService {
       referredBy: createUserDto.refferredBy || null,
       amount: 100,
       totalEarned: 100,
-      totalreferred: 0,
+      totalReferred: 0,
     });
 
     //5. save the user to db
 
     const savedUser = await newUser.save();
+    console.log('Saved User:', savedUser);
 
     //6. map to our user response interceptor
 
-    const UserResponse: UserResponse = {
+    const userResponse: UserResponse = {
       id: savedUser._id.toString(),
       fullName: savedUser.fullName,
       username: savedUser.username,
@@ -70,10 +71,12 @@ export class UserService {
       amount: savedUser.amount,
       totalEarned: savedUser.totalEarned,
       totalreferred: savedUser.totalreferred,
+      // updatedAt: savedUser.updatedAt,
+      // createdAt: savedUser.createdAt,
     };
 
-    this.userModel.create(createUserDto);
-    return UserResponse;
+    // this.userModel.create(createUserDto);
+    return userResponse;
   }
 
   async loginUser(logingUser: UserLoginDto) {

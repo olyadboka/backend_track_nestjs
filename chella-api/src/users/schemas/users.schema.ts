@@ -1,12 +1,20 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { time } from 'console';
-import { Document, Schema } from 'mongoose';
+import { truncate } from 'fs';
+import {
+  DefaultSchemaOptions,
+  Document,
+  Model,
+  ResolveSchemaOptions,
+  SchemaDefinitionProperty,
+} from 'mongoose';
 
+@Schema({ timestamps: true })
 export class User extends Document {
   @Prop()
   fullName: string;
 
-  @Prop()
+  @Prop({ unique: true })
   username: string;
   @Prop()
   password: string;
@@ -23,6 +31,9 @@ export class User extends Document {
 
   @Prop()
   totalReferrals: number;
+
+  @Prop()
+  totalreferred: number;
 }
 
 export const userSchema = SchemaFactory.createForClass(User);

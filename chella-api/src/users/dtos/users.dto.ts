@@ -2,7 +2,6 @@
 
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-// @Injectable()
 export class CreateUserDto {
   @IsString()
   fullName: string;
