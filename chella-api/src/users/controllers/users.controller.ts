@@ -34,7 +34,7 @@ export class UsersController {
     console.log('Methods:', req.method);
     console.log('Url:', req.url);
     console.log('body:', req.body);
-    console.log('params:', req.parms);
+    console.log('params:', req.parm);
     const result = await this.userService.updateUserProfile(id, updateUserDto);
     return result;
   }

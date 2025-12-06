@@ -106,25 +106,26 @@ export class UserService {
         throw new BadRequestException('Username is already taken');
       }
 
-      //#. saving to the db
-
-      const updatedUser = await user.save();
-
-      const userResponse: UserResponse = {
-        id: updatedUser._id.toString(),
-        fullName: updatedUser.fullName,
-        username: updatedUser.username,
-        referralCode: updatedUser.referralCode,
-        amount: updatedUser.amount,
-        totalEarned: updatedUser.totalEarned,
-        totalreferred: updatedUser.totalreferred,
-        // updatedAt: savedUser.updatedAt,
-        // createdAt: savedUser.createdAt,
-      };
-
-      // this.userModel.create(createUserDto);
-      return userResponse;
+      user.username = updateProfileDto.username;
     }
+    //#. saving to the db
+
+    const updatedUser = await user.save();
+
+    const userResponse: UserResponse = {
+      id: updatedUser._id.toString(),
+      fullName: updatedUser.fullName,
+      username: updatedUser.username,
+      referralCode: updatedUser.referralCode,
+      amount: updatedUser.amount,
+      totalEarned: updatedUser.totalEarned,
+      totalreferred: updatedUser.totalreferred,
+      // updatedAt: savedUser.updatedAt,
+      // createdAt: savedUser.createdAt,
+    };
+
+    // this.userModel.create(createUserDto);
+    return userResponse;
   }
 }
 
