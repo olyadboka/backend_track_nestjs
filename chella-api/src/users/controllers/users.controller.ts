@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Post, Patch, Param, Req } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, UserLoginDto } from '../dtos/users.dto';
 import { UserService } from '../services/users.service';
 
@@ -25,19 +25,29 @@ export class UsersController {
     return result;
   }
 
-  @Patch('update-profile')
-  async updateProfile(@Body() updateUserDto: UpdateUserDto) {
-    const result = await this.userService.updateUserProfile(updateUserDto);
-    return result;
-  }
-  @Get('myreferral')
-  async getMyReferral() {
-    const result = await this.userService.getMyReferral();
-    return result;
-  }
-  @Get('myprofile')
-  async getMyProfile() {
-    const result = await this.userService.getMyProfile();
+  @Patch('update-profile/:id')
+  async updateProfile(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req: any,
+  ) {
+    console.log('Methods:', req.method);
+    console.log('Url:', req.url);
+    console.log('body:', req.body);
+    console.log('params:', req.parms);
+    const result = await this.userService.updateUserProfile(id, updateUserDto);
     return result;
   }
 }
+// }
+// @Get('myreferral')
+// async getMyReferral() {
+//   const result = await this.userService.getMyReferral();
+//   return result;
+// }
+// @Get('myprofile')
+// async getMyProfile() {
+//   const result = await this.userService.getMyProfile();
+//   return result;
+// }
+// }

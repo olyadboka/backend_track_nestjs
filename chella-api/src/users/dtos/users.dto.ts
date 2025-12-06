@@ -27,15 +27,11 @@ export class UserLoginDto {
 
 export class UpdateUserDto {
   @IsString()
+  @IsOptional()
   fullName: string;
   @IsString()
-  username: string;
-  @IsString()
-  password: string;
-  @IsString()
-  @IsEmail()
-  email: string;
-  @IsString()
   @IsOptional()
-  refferredBy?: string;
+  username: string;
+  // @IsString()
+  // password: string;
 }

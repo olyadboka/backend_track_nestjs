@@ -84,33 +84,55 @@ export class UserService {
     return { message: 'User is logged in successfully' };
   }
 
-  async updateUserProfile(updateProfileDto: UpdateUserDto) {
+  async updateUserProfile(id: string, updateProfileDto: UpdateUserDto) {
     //1. get the data from dto
-    const body = updateProfileDto;
+    // const body = updateProfileDto;
 
-    // 2. find the user from db and update the profile
+    const user = await this.userModel.findById(id);
+    if (!user) {
+      throw new BadRequestException('User not found with this id');
+    }
+    //2. Preparing things
 
-    const updatedUser = await this.userModel.findOneAndUpdate(
-      { username: body.username },
-      {
-        fullName: body.fullName,
-        password: body.password,
-        email: body.email,
-        referredBy: body.refferredBy || null,
-      },
-      { new: true },
-    );
-    console.log('Updated User:', updatedUser);
+    if (updateProfileDto.fullName) {
+      user.fullName = updateProfileDto.fullName;
+    }
+    if (updateProfileDto.username) {
+      const existingUser = await this.userModel.findOne({
+        username: updateProfileDto.username.toLowerCase(),
+      });
 
-    //4. return the updated user profile
-    return updatedUser;
-  }
+      if (existingUser && existingUser.username !== user.username) {
+        throw new BadRequestException('Username is already taken');
+      }
 
-  async getMyReferral() {
-    return { message: 'User referral data fetched successfully' };
-  }
+      //#. saving to the db
 
-  async getMyProfile() {
-    return { message: 'User profile data fetched successfully' };
+      const updatedUser = await user.save();
+
+      const userResponse: UserResponse = {
+        id: updatedUser._id.toString(),
+        fullName: updatedUser.fullName,
+        username: updatedUser.username,
+        referralCode: updatedUser.referralCode,
+        amount: updatedUser.amount,
+        totalEarned: updatedUser.totalEarned,
+        totalreferred: updatedUser.totalreferred,
+        // updatedAt: savedUser.updatedAt,
+        // createdAt: savedUser.createdAt,
+      };
+
+      // this.userModel.create(createUserDto);
+      return userResponse;
+    }
   }
 }
+
+//   async getMyReferral() {
+//     return { message: 'User referral data fetched successfully' };
+//   }
+
+//   async getMyProfile() {
+//     return { message: 'User profile data fetched successfully' };
+//   }
+// }
