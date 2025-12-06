@@ -38,6 +38,14 @@ export class UsersController {
     const result = await this.userService.updateUserProfile(id, updateUserDto);
     return result;
   }
+
+  @Get('get-profile/:id')
+  async getProfile(@Param('id') id: string) {
+    const result = await this.userService.getUserProfile(id);
+    return result;
+  }
+  @Get('get-all-users')
+  async getAllUsers() {}
 }
 // }
 // @Get('myreferral')

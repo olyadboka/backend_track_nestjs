@@ -127,8 +127,42 @@ export class UserService {
     // this.userModel.create(createUserDto);
     return userResponse;
   }
-}
 
+  // GET A SIGNLE USER/PROFILE
+
+  async getUserProfile(id: string) {
+    const user = await this.userModel.findById(id);
+    if (!user) {
+      throw new BadRequestException('User not found with this id');
+    }
+    const UserResponse: UserResponse = {
+      id: user._id.toString(),
+      fullName: user.fullName,
+      username: user.username,
+      referralCode: user.referralCode,
+      amount: user.amount,
+      totalEarned: user.totalEarned,
+      totalreferred: user.totalreferred,
+    };
+    return UserResponse;
+  }
+
+ async getAllUsers(){
+  const users = await this.userModel.find();
+  
+  const userResponses: UserResponse[] = users.map((user:User)) => ({
+    id: user._id.tostring(),
+    fullName: user.fullName,
+    username: user.username,
+    referralCode: user.referralCode,
+    amount: user.amount,
+    totalEarned: user.totalEarned,
+    totalreferred: user.totalreferred,
+  })
+ }
+
+
+}
 //   async getMyReferral() {
 //     return { message: 'User referral data fetched successfully' };
 //   }
