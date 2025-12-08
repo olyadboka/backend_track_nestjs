@@ -45,7 +45,10 @@ export class UsersController {
     return result;
   }
   @Get('get-all-users')
-  async getAllUsers() {}
+  async getAllUsers() {
+    const result = await this.userService.getAllUsers();
+    return result;
+  }
 }
 // }
 // @Get('myreferral')
