@@ -147,21 +147,23 @@ export class UserService {
     return UserResponse;
   }
 
- async getAllUsers(){
-  const users = await this.userModel.find();
-  
-  const userResponses: UserResponse[] = users.map((user:User)) => ({
-    id: user._id.tostring(),
-    fullName: user.fullName,
-    username: user.username,
-    referralCode: user.referralCode,
-    amount: user.amount,
-    totalEarned: user.totalEarned,
-    totalreferred: user.totalreferred,
-  })
- }
+  async getAllUsers() {
+    const users = await this.userModel.find();
+    if (!users || users.length === 0) {
+      return [];
+    }
 
-
+    const UserResponse: UserResponse[] = users.map((user) => ({
+      id: user._id.toString(),
+      fullName: user.fullName,
+      username: user.username,
+      referralCode: user.referralCode,
+      amount: user.amount,
+      totalEarned: user.totalEarned,
+      totalreferred: user.totalreferred,
+    }));
+    return UserResponse;
+  }
 }
 //   async getMyReferral() {
 //     return { message: 'User referral data fetched successfully' };
