@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 export class CommonUtils {
   static generateReferralCode(length: number): string {
     const characters =
@@ -11,7 +13,7 @@ export class CommonUtils {
   }
 
   static generateJwtToken(jwtData) {
-    const generatedToken = jwtData.sign(jwtData, process.env.JWT_SECRET!, {
+    const generatedToken = jwt.sign(jwtData, process.env.JWT_SECRET!, {
       expiresIn: '10m',
     });
     return generatedToken;

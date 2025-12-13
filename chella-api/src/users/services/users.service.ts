@@ -79,10 +79,10 @@ export class UserService {
     return userResponse;
   }
 
-  async loginUser(logingUser: UserLoginDto) {
-    // user login logic goes here
-    return { message: 'User is logged in successfully' };
-  }
+  // async loginUser(logingUser: UserLoginDto) {
+  //   // user login logic goes here
+  //   return { message: 'User is logged in successfully' };
+  // }
 
   async updateUserProfile(id: string, updateProfileDto: UpdateUserDto) {
     //1. get the data from dto
@@ -194,6 +194,19 @@ export class UserService {
     console.log(' GENERATED TOKEN:', generatedToken);
 
     return { accessToken: generatedToken };
+  }
+
+  async getMyrefferalCode(currrentUser) {
+    const user = await this.userModel.findById(currrentUser.id);
+
+    if (!user) {
+      throw new BadRequestException('user is not found');
+    }
+
+    const UserResponse: UserResponse = {
+      referralCode: user.referralCode,
+    };
+    return UserResponse;
   }
 }
 

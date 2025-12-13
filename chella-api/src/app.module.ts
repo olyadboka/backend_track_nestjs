@@ -8,6 +8,7 @@ import { ReferalsModule } from './referals/referals.module';
 import { TasksModule } from './tasks/tasks.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './commons/guards/jwt.strategy';
 
 @Module({
   imports: [
@@ -22,6 +23,6 @@ import { ConfigModule } from '@nestjs/config';
     TasksModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}

@@ -23,7 +23,7 @@ export class UsersController {
 
   @Post('login')
   async loginUser(@Body() userLoginDto: UserLoginDto) {
-    const result = await this.userService.loginUser(userLoginDto);
+    const result = await this.userService.userLogin(userLoginDto);
     return result;
   }
 
@@ -52,6 +52,14 @@ export class UsersController {
   async getAllUsers() {
     const result = await this.userService.getAllUsers();
     return result;
+  }
+
+  @JwtAuthGuard()
+  @Get('my-referral-code')
+  async getMyreferralCode(@Req() req: any) {
+    const referral = this.userService.getMyrefferalCode(req.user);
+
+    return referral;
   }
 }
 // }
