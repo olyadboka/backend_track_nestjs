@@ -7,12 +7,14 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { ReferalsModule } from './referals/referals.module';
 import { TasksModule } from './tasks/tasks.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://olyadboka:olyadboka@chella.wigdowe.mongodb.net/chella_db?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true, //this makes the configuration available globally
+    }),
+    MongooseModule.forRoot(process.env.MONGODB_URI || ''),
     UsersModule,
     ExchangeRatesModule,
     TransactionsModule,

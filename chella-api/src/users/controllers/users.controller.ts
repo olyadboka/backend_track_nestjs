@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, Patch, Param, Req } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, UserLoginDto } from '../dtos/users.dto';
 import { UserService } from '../services/users.service';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/commons/guards/jwtauth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -44,6 +46,8 @@ export class UsersController {
     const result = await this.userService.getUserProfile(id);
     return result;
   }
+
+  @JwtAuthGuard()
   @Get('get-all-users')
   async getAllUsers() {
     const result = await this.userService.getAllUsers();

@@ -165,7 +165,36 @@ export class UserService {
     return UserResponse;
   }
 
-  //
+  // LOgin service
+  async userLogin(userLoginDto: UserLoginDto) {
+    const user = await this.userModel.findOne({
+      username: userLoginDto.username.toLowerCase(),
+    });
+
+    if (!user) {
+      throw new BadRequestException('Invalid username ');
+    }
+
+    const isPwdMatch = await bcrypt.compare(
+      userLoginDto.password,
+      user.password,
+    );
+
+    if (!isPwdMatch) {
+      throw new BadRequestException('Invalid password ');
+    }
+
+    const jwtData = {
+      id: user._id.toString(),
+      fullName: user.fullName,
+      username: user.username,
+    };
+
+    const generatedToken = CommonUtils.generateJwtToken(jwtData);
+    console.log(' GENERATED TOKEN:', generatedToken);
+
+    return { accessToken: generatedToken };
+  }
 }
 
 //   async getMyReferral() {

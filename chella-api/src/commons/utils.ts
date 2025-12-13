@@ -11,13 +11,9 @@ export class CommonUtils {
   }
 
   static generateJwtToken(jwtData) {
-    const generatedToken = jwtData.sign(
-      jwtData,
-      'hkjllkghgkjgkjgjghjghjghjghjghj',
-      {
-        expiresIn: '10m',
-      },
-    );
+    const generatedToken = jwtData.sign(jwtData, process.env.JWT_SECRET!, {
+      expiresIn: '10m',
+    });
     return generatedToken;
   }
 }
