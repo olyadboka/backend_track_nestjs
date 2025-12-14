@@ -13,7 +13,7 @@ import { JwtStrategy } from './commons/guards/jwt.strategy';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, //this makes the configuration available globally
+      isGlobal: true, //this makes the configuration available globally.........
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI || ''),
     UsersModule,
