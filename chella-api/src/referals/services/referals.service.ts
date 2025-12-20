@@ -12,10 +12,10 @@ export class ReferralService {
     private readonly referralModel: Model<Referal>,
   ) {}
 
-  async createReferralTracking(referredId: string, referredUserId: string) {
+  async createReferralTracking(referrerId: string, referredUserId: string) {
     //!. Preventing self-referral
 
-    if (referredId === referredUserId) {
+    if (referrerId === referredUserId) {
       throw new BadRequestException('Usedr can not  refer them selves');
     }
 
@@ -30,8 +30,8 @@ export class ReferralService {
     }
 
     const referral = await this.referralModel.create({
-      referrerId: referredId,
-      referredUserId: referredUserId,
+      referrerId: new Types.ObjectId(referrerId),
+      referredUserId:  new Types.ObjectId(referredUserId),
     });
 
     return referral.save();

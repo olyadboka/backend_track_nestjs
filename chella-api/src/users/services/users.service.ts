@@ -35,20 +35,13 @@ export class UserService {
     const referralCode = CommonUtils.generateReferralCode(8);
     //! we will impelemend a code to increase amount for refering users
 
+
+    let referringUser = null as any;
     if (createUserDto.refferredBy) {
-      const referringUser = await this.userModel.findOne({
+      referringUser = await this.userModel.findOne({
         referralCode: createUserDto.refferredBy,
       });
-      if (referringUser) {
-        await this.referralService.createReferralTracking(
-          referringUser._id.toString(),
-          newUser._id(),
-        );
-        await this.userModel.findByIdAndUpdate(referringUser._id, {
-          totalEarned: referringUser.totalEarned + 20,
-          amount: referringUser.amount + 20,
-        });
-      }
+
     }
     //4.Prepare an instance to save on db
 
@@ -68,7 +61,16 @@ export class UserService {
 
     const savedUser = await newUser.save();
     console.log('Saved User:', savedUser);
-
+      if (referringUser) {
+        await this.referralService.createReferralTracking(
+          referringUser._id.toString(),
+          savedUser._id.toString(),
+        );
+        await this.userModel.findByIdAndUpdate(referringUser._id, {
+          totalEarned: referringUser.totalEarned + 20,
+          amount: referringUser.amount + 20,
+        });
+      }
     //6. map to our user response interceptor
 
     const userResponse: UserResponse = {
