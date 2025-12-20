@@ -7,10 +7,14 @@ import { User } from '../schemas/users.schema';
 import { CommonUtils } from 'src/commons/utils';
 import { UserResponse } from '../responses/users.response';
 import bcrypt from 'bcrypt';
+import { Referal } from 'src/referals/schemas/referals.schema';
+import { ReferalsModule } from '../../referals/referals.module';
+import { ReferralService } from 'src/referals/services/referals.service';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly referralService: ReferralService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -36,6 +40,10 @@ export class UserService {
         referralCode: createUserDto.refferredBy,
       });
       if (referringUser) {
+        await this.referralService.createReferralTracking(
+          referringUser._id.toString(),
+          newUser._id(),
+        );
         await this.userModel.findByIdAndUpdate(referringUser._id, {
           totalEarned: referringUser.totalEarned + 20,
           amount: referringUser.amount + 20,
