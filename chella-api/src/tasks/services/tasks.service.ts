@@ -16,7 +16,7 @@ export class TasksService {
     ) {}
 
     // Background job to create daily tasks
-    @Cron(CronExpression.EVERY_10_MINUTES)
+    @Cron(CronExpression.EVERY_10_SECONDS)
     async createDailyTasks(){
         console.log("HEY WE ARE RUNNING A CORN JOB EVERY 30 MINUTES")
         const today = new Date().toISOString().split('T')[0];
@@ -46,7 +46,6 @@ export class TasksService {
         }
         console.log(`${tasksToCreate} tasks created for today.`);
     }
-
 
 
     //fetch daily tasks 

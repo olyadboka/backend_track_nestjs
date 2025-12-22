@@ -9,6 +9,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { JwtStrategy } from './commons/guards/jwt.strategy';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -21,6 +22,8 @@ import { JwtStrategy } from './commons/guards/jwt.strategy';
     TransactionsModule,
     ReferalsModule,
     TasksModule,
+
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
