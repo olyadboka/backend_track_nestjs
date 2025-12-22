@@ -1,25 +1,36 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { timeStamp } from "console";
 import { Document } from "mongoose";
 
-@Schema({ timestamps: true})
-export class Task extends Document{
-  @Prop() title: string;
-  @Prop() rewardAmount: number;
-  @Prop() taskDate: Date;
+@Schema({ timestamps: true })
+export class Task extends Document {
+  @Prop({ required: true })
+  title: string;
+
+  @Prop({ required: true, default: 10 })
+  rewardAmount: number;
+
+  @Prop({ required: true })
+  taskDate: Date;
+
+  @Prop({ default: true })
+  isActive: boolean;
 }
 
+export const TaskSchema = SchemaFactory.createForClass(Task);
 
-export const taskSchema = SchemaFactory.createForClass(Task)
+@Schema({ timestamps: true })
+export class UserTask extends Document {
+  @Prop({ required: true })
+  userId: string;
 
+  @Prop({ required: true, ref: 'Task' })
+  taskId: string;
 
-@Schema({timestamps: true})
+  @Prop({ default: false })
+  isCompleted: boolean;
 
-export class UserTask extends Document{
-   @Prop() userId: string;
-  @Prop() taskId: number;
-  @Prop() isCompleted: boolean;
+  @Prop()
+  completedAt: Date;
 }
 
-
-export const userTaskSchema = SchemaFactory.createForClass(UserTask)
+export const UserTaskSchema = SchemaFactory.createForClass(UserTask);

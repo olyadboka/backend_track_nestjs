@@ -218,6 +218,18 @@ export class UserService {
     };
     return UserResponse;
   }
+
+  // REWARD MANAGEMENT SERVICES
+   async addTaskRewardToUser(currentUserId: string, rewardAmount: number){
+    const user = await this.userModel.findById(currentUserId);
+
+    if(!user){
+      throw new BadRequestException("User not Found!");
+    }
+
+    user.totalEarned += rewardAmount;
+    await user.save();
+   }
 }
 
 //   async getMyReferral() {
