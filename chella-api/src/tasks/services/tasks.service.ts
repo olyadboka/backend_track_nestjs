@@ -110,5 +110,38 @@ export class TasksService {
     taskDate: taskExists.taskDate,
     isCompleted: savedUserTask.isCompleted
       }
+
+
+      return response;
   }
+
+
+  //getting all the completed tasks for the user
+
+// a service to fetch completed tasks by current user
+    async getUserCompletedTasks(currentUser){
+        //1. get user completed tasks from userTask collection
+        const userTasks = await this.userTaskModel.find({
+            userId: currentUser.id,
+            isCompleted: true
+        });
+
+        const taskIds = userTasks.map(userTask => userTask.taskId);
+
+        const tasks = await this.taskModel.find({
+            _id: { $in: taskIds }
+        });
+
+        //3. prepraring response
+        const response: TaskResponse[] = tasks.map((task) => ({
+            id: task._id.toString(),
+            title: task.title,
+            rewardAmount: task.rewardAmount,
+            taskDate: task.taskDate,
+            isCompleted: true
+        }));
+
+        return response;
+    }
+
 }

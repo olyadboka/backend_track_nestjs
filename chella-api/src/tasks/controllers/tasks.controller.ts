@@ -23,4 +23,14 @@ export class TasksController{
 
    return result;
    }
+
+
+    @JwtAuthGuard()
+    @Get('get-my-completed-tasks')
+    async getMyCompletedTasks(@Req() req:any) {
+        const currentUser = req.user;
+        return await this.tasksService.getUserCompletedTasks(currentUser);
+    }
+
+
 }
