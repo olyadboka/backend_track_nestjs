@@ -230,6 +230,16 @@ export class UserService {
     user.totalEarned += rewardAmount;
     await user.save();
    }
+
+   async checkUser(username: string){
+
+    const exists = this.userModel.exists({username: username})
+    return exists
+   }
+
+    getUserBalance = async () =>{
+  const balanc
+   }
 }
 
 //   async getMyReferral() {

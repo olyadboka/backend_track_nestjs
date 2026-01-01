@@ -9,14 +9,16 @@ export class Transaction extends Document{
           //  transferId: Types.ObjectId()
           senderId: Types.ObjectId;
           @Prop({ required: true,type: Types.ObjectId, ref: User.name })
-          receiverId: string
+          receiverId: Types.ObjectId;
 
           @Prop({ required: true })
-          amount: number
+          amount?: number
           @Prop({ required: true })
           status: string
           @Prop({enum: ["ETB","USD","EUR"],default: "ETB"})
           currency: string
+          @Prop()
+          createdAt: Date
 
 
 }
