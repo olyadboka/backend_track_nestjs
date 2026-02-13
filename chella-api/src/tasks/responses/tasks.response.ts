@@ -4,6 +4,4 @@ export class TaskResponse {
   rewardAmount?: number;
   taskDate?: Date;
   isCompleted?: boolean;
-
 }
-

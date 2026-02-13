@@ -35,13 +35,11 @@ export class UserService {
     const referralCode = CommonUtils.generateReferralCode(8);
     //! we will impelemend a code to increase amount for refering users
 
-
     let referringUser = null as any;
     if (createUserDto.refferredBy) {
       referringUser = await this.userModel.findOne({
         referralCode: createUserDto.refferredBy,
       });
-
     }
     //4.Prepare an instance to save on db
 
@@ -61,16 +59,16 @@ export class UserService {
 
     const savedUser = await newUser.save();
     console.log('Saved User:', savedUser);
-      if (referringUser) {
-        await this.referralService.createReferralTracking(
-          referringUser._id.toString(),
-          savedUser._id.toString(),
-        );
-        await this.userModel.findByIdAndUpdate(referringUser._id, {
-          totalEarned: referringUser.totalEarned + 20,
-          amount: referringUser.amount + 20,
-        });
-      }
+    if (referringUser) {
+      await this.referralService.createReferralTracking(
+        referringUser._id.toString(),
+        savedUser._id.toString(),
+      );
+      await this.userModel.findByIdAndUpdate(referringUser._id, {
+        totalEarned: referringUser.totalEarned + 20,
+        amount: referringUser.amount + 20,
+      });
+    }
     //6. map to our user response interceptor
 
     const userResponse: UserResponse = {
@@ -220,24 +218,22 @@ export class UserService {
   }
 
   // REWARD MANAGEMENT SERVICES
-   async addTaskRewardToUser(currentUserId: string, rewardAmount: number){
+  async addTaskRewardToUser(currentUserId: string, rewardAmount: number) {
     const user = await this.userModel.findById(currentUserId);
 
-    if(!user){
-      throw new BadRequestException("User not Found!");
+    if (!user) {
+      throw new BadRequestException('User not Found!');
     }
 
     user.totalEarned += rewardAmount;
     await user.save();
-   }
+  }
 
   //  async checkUser(username: string){
 
   //   const exists = this.userModel.exists({username: username})
   //   return exists
   //  }
-
-   
 }
 
 //   async getMyReferral() {

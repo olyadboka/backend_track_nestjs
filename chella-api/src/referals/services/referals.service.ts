@@ -3,7 +3,10 @@ import { Referal } from '../schemas/referals.schema';
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { retry } from 'rxjs';
-import { ReferredUsersResporse, ReferrerResponse } from '../responses/referals.response';
+import {
+  ReferredUsersResporse,
+  ReferrerResponse,
+} from '../responses/referals.response';
 
 @Injectable()
 export class ReferralService {
@@ -31,52 +34,58 @@ export class ReferralService {
 
     const referral = await this.referralModel.create({
       referrerId: new Types.ObjectId(referrerId),
-      referredUserId:  new Types.ObjectId(referredUserId),
+      referredUserId: new Types.ObjectId(referredUserId),
     });
 
     return referral.save();
   }
 
-  async getMyReferrer(currentUser){
-    const referral = await this.referralModel.findOne({
-      referredUserId: new Types.ObjectId(currentUser.id)
-    }).populate('referrerId','username fullName createdAt');
+  async getMyReferrer(currentUser) {
+    const referral = await this.referralModel
+      .findOne({
+        referredUserId: new Types.ObjectId(currentUser.id),
+      })
+      .populate('referrerId', 'username fullName createdAt');
 
-    if(!referral){
-      throw new BadRequestException(" You don't have a referrer.")
+    if (!referral) {
+      throw new BadRequestException(" You don't have a referrer.");
     }
 
     const referrer = referral.referrerId as any;
 
-    console.log("Referral found: ", referral);
-    console.log("Referrer found:", referrer);
+    console.log('Referral found: ', referral);
+    console.log('Referrer found:', referrer);
 
-    const referrerRespose: ReferrerResponse ={
+    const referrerRespose: ReferrerResponse = {
       id: referral?._id.toString(),
       referrerId: referrer?._id.toString(),
       referrerFullName: referrer?.fullName,
       referrerUsername: referrer?.usernme,
-    }
+    };
     return referrerRespose;
   }
 
+  async getMyReferredUsers(currentUser) {
+    const referrals = await this.referralModel
+      .find({ referrerId: new Types.ObjectId(currentUser.id) })
+      .populate('referredUserId', 'username fullName createdAt');
 
-  async getMyReferredUsers(currentUser){
-    const referrals = await this.referralModel.find({referrerId: new Types.ObjectId(currentUser.id)}).populate("referredUserId", "username fullName createdAt")
-
-    if(referrals.length === 0){
+    if (referrals.length === 0) {
       return [];
     }
 
-     const referredRespose: ReferredUsersResporse[] = referrals.map(referral => {
-      const referredUser = referral.referredUserId as any;
-      return {id: referral?._id.toString(),
-      referrerId: referredUser?._id.toString(),
-      referrerFullName: referredUser?.fullName,
-      referrerUsername: referredUser?.usernme,
-    }});
-    
+    const referredRespose: ReferredUsersResporse[] = referrals.map(
+      (referral) => {
+        const referredUser = referral.referredUserId as any;
+        return {
+          id: referral?._id.toString(),
+          referrerId: referredUser?._id.toString(),
+          referrerFullName: referredUser?.fullName,
+          referrerUsername: referredUser?.usernme,
+        };
+      },
+    );
 
-    return referredRespose
+    return referredRespose;
   }
 }

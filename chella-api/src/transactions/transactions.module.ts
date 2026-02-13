@@ -6,17 +6,13 @@ import { TransactionsController } from './controllers/transactions.controller';
 import { User, userSchema } from 'src/users/schemas/users.schema';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
-      {name: Transaction.name, schema: TransactionSchema},
-      {name: User.name, schema: userSchema},
-    
-    ]
-    )],
-  controllers:[TransactionsController],
-  providers:[
-    TransactionsService
-  ]
-  
+      { name: Transaction.name, schema: TransactionSchema },
+      { name: User.name, schema: userSchema },
+    ]),
+  ],
+  controllers: [TransactionsController],
+  providers: [TransactionsService],
 })
 export class TransactionsModule {}

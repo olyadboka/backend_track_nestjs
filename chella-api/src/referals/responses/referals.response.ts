@@ -5,7 +5,7 @@ export class ReferrerResponse {
   referrerUsername?: string;
 }
 
-export class ReferredUsersResporse{
+export class ReferredUsersResporse {
   id?: string;
   referredUserId?: string;
   referredUserFullName?: string;

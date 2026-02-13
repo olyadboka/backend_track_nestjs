@@ -14,7 +14,6 @@ import { Task, TaskSchema } from 'src/tasks/schemas/tasks.schema';
       { name: User.name, schema: userSchema },
       { name: Referal.name, schema: referralSchema },
       { name: Task.name, schema: TaskSchema },
-     
     ]),
   ],
   controllers: [UsersController],
