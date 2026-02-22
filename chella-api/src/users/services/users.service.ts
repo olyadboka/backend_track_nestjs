@@ -20,7 +20,7 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto) {
     // user registration logic goes here
 
-    //1. check if yser exists with provided email or username
+    //1. check if user exists with provided email or username
     const existName = await this.userModel.findOne({
       username: createUserDto.username.toLowerCase(),
     });
