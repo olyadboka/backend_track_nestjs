@@ -9,8 +9,8 @@ import {
   UserTaskSchema,
 } from './schemas/tasks.schema';
 import { User, userSchema } from '../users/schemas/users.schema';
-import { UserService } from 'src/users/services/users.service';
-import { Referal, referralSchema } from 'src/referals/schemas/referals.schema';
+import { UserService } from '../users/services/users.service';
+import { Referal, referralSchema } from '../referals/schemas/referals.schema';
 import { ReferralService } from '../referals/services/referals.service';
 
 @Module({

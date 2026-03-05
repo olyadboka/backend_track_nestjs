@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Patch, Param, Req } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto, UserLoginDto } from '../dtos/users.dto';
 import { UserService } from '../services/users.service';
-import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard } from 'src/commons/guards/jwtauth.guard';
+// import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../../commons/guards/jwtauth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -26,7 +26,7 @@ export class UsersController {
     const result = await this.userService.userLogin(userLoginDto);
     return result;
   }
-
+  @JwtAuthGuard()
   @Patch('update-profile/:id')
   async updateProfile(
     @Param('id') id: string,

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Req } from '@nestjs/common';
 import { TasksService } from '../services/tasks.service';
 import { request } from 'http';
-import { JwtAuthGuard } from 'src/commons/guards/jwtauth.guard';
+import { JwtAuthGuard } from '../../commons/guards/jwtauth.guard';
 
 @Controller('tasks')
 export class TasksController {
