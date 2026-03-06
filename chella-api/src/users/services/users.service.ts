@@ -4,12 +4,12 @@ import { get } from 'http';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../schemas/users.schema';
-import { CommonUtils } from 'src/commons/utils';
+import { CommonUtils } from '../../commons/utils';
 import { UserResponse } from '../responses/users.response';
 import bcrypt from 'bcrypt';
-import { Referal } from 'src/referals/schemas/referals.schema';
+import { Referal } from '../../referals/schemas/referals.schema';
 import { ReferalsModule } from '../../referals/referals.module';
-import { ReferralService } from 'src/referals/services/referals.service';
+import { ReferralService } from '../../referals/services/referals.service';
 @Injectable()
 export class UserService {
   constructor(
